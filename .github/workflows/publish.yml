@@ -1,0 +1,53 @@
+name: Publish Maven Central
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify release metadata
+        run: python3 scripts/check-release.py
+        env:
+          GITHUB_REF_TYPE: ${{ github.ref_type }}
+          GITHUB_REF_NAME: ${{ github.ref_name }}
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg-passphrase: GPG_PASSPHRASE
+
+      - name: Test
+        run: mvn --batch-mode verify
+
+      - name: Deploy to Maven Central
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          if [ -z "$CENTRAL_USERNAME" ] || [ -z "$CENTRAL_PASSWORD" ]; then
+            echo "Missing CENTRAL_USERNAME / CENTRAL_PASSWORD secrets"
+            exit 1
+          fi
+          if [ -z "$GPG_PASSPHRASE" ] && [ -z "${{ secrets.GPG_PRIVATE_KEY }}" ]; then
+            echo "Missing GPG_PRIVATE_KEY / GPG_PASSPHRASE secrets"
+            exit 1
+          fi
+          mvn --batch-mode -Pcentral-publish deploy -DskipTests
