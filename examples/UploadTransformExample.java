@@ -26,7 +26,7 @@ public final class UploadTransformExample {
             .baseUrl(
                 System.getenv("IMAZEO_BASE_URL") != null
                     ? System.getenv("IMAZEO_BASE_URL")
-                    : "http://localhost:3001");
+                    : "https://api.imazeo.com");
     String projectId = System.getenv("IMAZEO_PROJECT_ID");
     if (projectId != null && !projectId.isBlank()) {
       builder.projectId(projectId);

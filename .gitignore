@@ -7,5 +7,5 @@ target/
 .vscode/
 *.class
 .DS_Store
-.classpath
 *.log
+node_modules/

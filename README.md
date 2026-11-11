@@ -35,7 +35,8 @@ Gradle:
 implementation 'com.imazeo:imazeo:1.0.0'
 ```
 
-Requires Java 17+. Create a project API key in the Imazeo customer portal.
+Requires Java 17+. Create a project API key in the
+[Imazeo Customer portal](https://app.imazeo.com).
 Default API origin is `https://api.imazeo.com` (override with `baseUrl` when needed).
 
 ## Learning path
@@ -171,14 +172,16 @@ OpenAPI sync notes: [`openapi/README.md`](openapi/README.md).
 
 MIT
 
-## Media contract
+## Barcode and PDF notes
 
-Barcode generation requires `type` and string `content`; optional `format` is
-`png` or `svg` (default `png`), and `includeText` is a boolean (default `true`).
-PDF merge sends repeated `file` parts in order. Omit optional fields for defaults;
-JSON numbers/booleans are not coerced and top-level optional nulls are rejected.
-Barcode scale and image hue are integers. Methods retain language-specific names.
-The reviewed API-key-only contract is bundled in `openapi/backend.json`.
+Barcode generation requires `type` and string `content`. Optional `format` is
+`png` or `svg` (default `png`); `includeText` defaults to `true`.
+PDF merge uploads files in order as repeated multipart `file` parts.
+Omit optional fields to use API defaults. Integer fields such as barcode scale
+and image hue must be integers.
+
+A reviewed API-key OpenAPI snapshot ships in this repo as
+[`openapi/backend.json`](openapi/backend.json).
 
 ```java
 client.barcodes.generate(new BarcodeGenerateInput("code128", "IMAZEO-2026").setFormat("svg").setIncludeText(false));

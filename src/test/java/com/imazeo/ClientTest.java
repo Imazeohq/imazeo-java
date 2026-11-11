@@ -121,7 +121,7 @@ class ClientTest {
     RecordedRequest req = server.takeRequest();
     assertEquals("/v1/api-key/context", req.getPath());
     assertEquals("secret-key", req.getHeader("X-API-Key"));
-    assertTrue(req.getHeader("User-Agent").startsWith("Imazeo-Java/1.0.0"));
+    assertEquals("Imazeo-Java/" + Version.SDK_VERSION, req.getHeader("User-Agent"));
     assertEquals(null, req.getHeader("Authorization"));
   }
 
@@ -277,7 +277,7 @@ class ClientTest {
 
   @Test
   void reportsSdkVersionAndApiCompatibility() {
-    assertEquals("1.0.0", Imazeo.version());
+    assertEquals(Version.SDK_VERSION, Imazeo.version());
     assertEquals("v1", Imazeo.apiCompatibility().defaultApi());
     assertTrue(Imazeo.apiCompatibility().supported().contains("v1"));
   }
