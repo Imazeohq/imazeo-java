@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.imazeo.http.JsonSuccess;
 import com.imazeo.http.Transport;
 import com.imazeo.model.BinaryResult;
+import com.imazeo.model.ProcessingOptions;
 import com.imazeo.model.MessageResult;
 import com.imazeo.model.Page;
 import com.imazeo.model.PageParams;
@@ -25,6 +26,9 @@ public final class TransformsResource {
   }
 
   public BinaryResult create(TransformRequest request) {
+    return create(request, null);
+  }
+  public BinaryResult create(TransformRequest request, ProcessingOptions processing) {
     if (request.getImageId() == null && request.getUrl() == null) {
       throw new IllegalArgumentException("Exactly one of imageId or url is required");
     }
@@ -42,6 +46,7 @@ public final class TransformsResource {
     Map<String, String> headers = new LinkedHashMap<>();
     headers.put("Content-Type", "application/json");
     headers.put("Accept", "*/*");
+    if (processing != null) headers.putAll(processing.headers());
     return http.requestBinary("POST", url, headers, body, null);
   }
 

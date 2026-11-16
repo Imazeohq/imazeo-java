@@ -57,10 +57,14 @@ public final class MultipartBody {
 
     public Builder addFile(
         String fieldName, byte[] data, String filename, String contentType) {
-      parts.add(new Part(fieldName, filename, contentType, data));
+      parts.add(new Part(fieldName, filename != null ? filename : "file.bin", contentType, data));
       return this;
     }
 
+    public Builder addField(String name, String value) {
+      parts.add(new Part(name, null, "text/plain; charset=utf-8", value.getBytes(StandardCharsets.UTF_8)));
+      return this;
+    }
     public MultipartBody build() {
       try {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -71,9 +75,8 @@ public final class MultipartBody {
           String disposition =
               "Content-Disposition: form-data; name=\""
                   + part.fieldName
-                  + "\"; filename=\""
-                  + escapeFilename(part.filename)
-                  + "\"";
+                  + "\""
+                  + (part.filename == null ? "" : "; filename=\"" + escapeFilename(part.filename) + "\"");
           out.write(disposition.getBytes(StandardCharsets.US_ASCII));
           out.write(crlf);
           String ct =

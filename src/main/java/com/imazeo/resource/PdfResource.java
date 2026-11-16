@@ -6,6 +6,7 @@ import com.imazeo.http.JsonSuccess;
 import com.imazeo.http.MultipartBody;
 import com.imazeo.http.Transport;
 import com.imazeo.model.BinaryResult;
+import com.imazeo.model.ProcessingOptions;
 import com.imazeo.model.PdfExtractOptions;
 import com.imazeo.model.PdfInfo;
 import com.imazeo.model.PdfRenderOptions;
@@ -38,6 +39,9 @@ public final class PdfResource {
   }
 
   public PdfInfo info(UploadSource source, String filename) {
+    return info(source, filename, null);
+  }
+  public PdfInfo info(UploadSource source, String filename, ProcessingOptions processing) {
     String pid = projectId.get();
     PreparedUpload prepared =
         PreparedUpload.prepare(
@@ -45,7 +49,7 @@ public final class PdfResource {
     MultipartBody form = MultipartBody.builder().addFile("file", prepared).build();
     String url = http.path("projects", pid, "tools", "pdf", "info");
     return http.requestMultipartJson(
-            "POST", url, form, null, PdfInfo.class, Version.PDF_TIMEOUT_MS)
+            "POST", url, form, null, PdfInfo.class, Version.PDF_TIMEOUT_MS, processing == null ? Map.of() : processing.headers())
         .data();
   }
 
@@ -54,6 +58,9 @@ public final class PdfResource {
   }
 
   public PdfRenderResult render(UploadSource source, PdfRenderOptions options) {
+    return render(source, options, null);
+  }
+  public PdfRenderResult render(UploadSource source, PdfRenderOptions options, ProcessingOptions processing) {
     PdfRenderOptions opts = options != null ? options : new PdfRenderOptions();
     String pid = projectId.get();
     PreparedUpload prepared =
@@ -73,7 +80,7 @@ public final class PdfResource {
     String url =
         Transport.appendQuery(http.path("projects", pid, "tools", "pdf", "render"), q);
     Object result =
-        http.requestMultipartBinary("POST", url, form, null, Version.PDF_TIMEOUT_MS);
+        http.requestMultipartBinary("POST", url, form, null, Version.PDF_TIMEOUT_MS, processing == null ? Map.of() : processing.headers());
     if (result instanceof BinaryResult binary) {
       return PdfRenderResult.binary(binary);
     }
@@ -90,6 +97,9 @@ public final class PdfResource {
   }
 
   public BinaryResult merge(List<UploadSource> sources) {
+    return merge(sources, null);
+  }
+  public BinaryResult merge(List<UploadSource> sources, ProcessingOptions processing) {
     if (sources == null || sources.isEmpty()) {
       throw new IllegalArgumentException("At least one PDF is required");
     }
@@ -103,7 +113,7 @@ public final class PdfResource {
     }
     String url = http.path("projects", pid, "tools", "pdf", "merge");
     Object result =
-        http.requestMultipartBinary("POST", url, form.build(), null, Version.PDF_TIMEOUT_MS);
+        http.requestMultipartBinary("POST", url, form.build(), null, Version.PDF_TIMEOUT_MS, processing == null ? Map.of() : processing.headers());
     if (!(result instanceof BinaryResult binary)) {
       throw new IllegalStateException("Expected PDF binary response from merge");
     }
@@ -111,6 +121,9 @@ public final class PdfResource {
   }
 
   public BinaryResult extract(UploadSource source, PdfExtractOptions options) {
+    return extract(source, options, null);
+  }
+  public BinaryResult extract(UploadSource source, PdfExtractOptions options, ProcessingOptions processing) {
     if (options == null) {
       throw new IllegalArgumentException("extract options are required");
     }
@@ -128,7 +141,7 @@ public final class PdfResource {
     String url =
         Transport.appendQuery(http.path("projects", pid, "tools", "pdf", "extract"), q);
     Object result =
-        http.requestMultipartBinary("POST", url, form, null, Version.PDF_TIMEOUT_MS);
+        http.requestMultipartBinary("POST", url, form, null, Version.PDF_TIMEOUT_MS, processing == null ? Map.of() : processing.headers());
     if (!(result instanceof BinaryResult binary)) {
       throw new IllegalStateException("Expected PDF binary response from extract");
     }
