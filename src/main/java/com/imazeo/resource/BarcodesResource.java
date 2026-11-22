@@ -4,6 +4,7 @@ import com.imazeo.Version;
 import com.imazeo.http.Transport;
 import com.imazeo.model.BarcodeGenerateInput;
 import com.imazeo.model.BinaryResult;
+import com.imazeo.model.ProcessingOptions;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -19,6 +20,9 @@ public final class BarcodesResource {
   }
 
   public BinaryResult generate(BarcodeGenerateInput input) {
+    return generate(input, null);
+  }
+  public BinaryResult generate(BarcodeGenerateInput input, ProcessingOptions processing) {
     String pid = projectId.get();
     String url = http.path("projects", pid, "tools", "barcode");
     byte[] body;
@@ -30,6 +34,7 @@ public final class BarcodesResource {
     Map<String, String> headers = new LinkedHashMap<>();
     headers.put("Content-Type", "application/json");
     headers.put("Accept", "*/*");
+    if (processing != null) headers.putAll(processing.headers());
     return http.requestBinary("POST", url, headers, body, Version.LIGHT_TIMEOUT_MS);
   }
 }

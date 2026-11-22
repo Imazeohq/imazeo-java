@@ -5,6 +5,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 /** QR generation request body. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class QrGenerateInput {
+  private Boolean transparent;
+  private CodeDesign design;
+  public Boolean getTransparent() { return transparent; }
+  public QrGenerateInput setTransparent(Boolean value) { transparent = value; return this; }
+  public CodeDesign getDesign() { return design; }
+  public QrGenerateInput setDesign(CodeDesign value) { design = value; return this; }
   private String content;
   private String format;
   private Integer size;

@@ -89,8 +89,13 @@ public final class Transport {
 
   public <T> JsonSuccess<T> requestJson(
       String method, String url, Object body, Class<T> type, Long timeoutMs) {
+    return requestJson(method, url, body, type, timeoutMs, Map.of());
+  }
+  public <T> JsonSuccess<T> requestJson(
+      String method, String url, Object body, Class<T> type, Long timeoutMs, Map<String, String> extraHeaders) {
     Map<String, String> headers = new LinkedHashMap<>();
     headers.put("Accept", "application/json");
+    if (extraHeaders != null) headers.putAll(extraHeaders);
     byte[] payload = null;
     if (body != null) {
       headers.put("Content-Type", "application/json");
@@ -180,8 +185,12 @@ public final class Transport {
       Integer uploadLength,
       Class<T> type,
       Long timeoutMs) {
+    return requestMultipartJson(method, url, form, uploadLength, type, timeoutMs, Map.of());
+  }
+  public <T> JsonSuccess<T> requestMultipartJson(String method, String url, MultipartBody form, Integer uploadLength, Class<T> type, Long timeoutMs, Map<String, String> extraHeaders) {
     Map<String, String> headers = new LinkedHashMap<>();
     headers.put("Accept", "application/json");
+    if (extraHeaders != null) headers.putAll(extraHeaders);
     headers.put("Content-Type", form.contentType());
     if (uploadLength != null) {
       headers.put("X-Upload-Length", String.valueOf(uploadLength));
@@ -196,7 +205,11 @@ public final class Transport {
    */
   public Object requestMultipartBinary(
       String method, String url, MultipartBody form, Integer uploadLength, Long timeoutMs) {
+    return requestMultipartBinary(method, url, form, uploadLength, timeoutMs, Map.of());
+  }
+  public Object requestMultipartBinary(String method, String url, MultipartBody form, Integer uploadLength, Long timeoutMs, Map<String, String> extraHeaders) {
     Map<String, String> headers = new LinkedHashMap<>();
+    if (extraHeaders != null) headers.putAll(extraHeaders);
     headers.put("Accept", "*/*");
     headers.put("Content-Type", form.contentType());
     if (uploadLength != null) {

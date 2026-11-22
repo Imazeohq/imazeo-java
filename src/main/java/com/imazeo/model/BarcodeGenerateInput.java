@@ -5,6 +5,12 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 /** Barcode generation request body. */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public final class BarcodeGenerateInput {
+  private Boolean transparent;
+  private CodeDesign design;
+  public Boolean getTransparent() { return transparent; }
+  public BarcodeGenerateInput setTransparent(Boolean value) { transparent = value; return this; }
+  public CodeDesign getDesign() { return design; }
+  public BarcodeGenerateInput setDesign(CodeDesign value) { design = value; return this; }
   private String type;
   private String content;
   private String format;

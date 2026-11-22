@@ -3,6 +3,7 @@ package com.imazeo.resource;
 import com.imazeo.Version;
 import com.imazeo.http.Transport;
 import com.imazeo.model.BinaryResult;
+import com.imazeo.model.ProcessingOptions;
 import com.imazeo.model.QrGenerateInput;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,6 +20,9 @@ public final class QrResource {
   }
 
   public BinaryResult generate(QrGenerateInput input) {
+    return generate(input, null);
+  }
+  public BinaryResult generate(QrGenerateInput input, ProcessingOptions processing) {
     String pid = projectId.get();
     String url = http.path("projects", pid, "tools", "qr");
     byte[] body;
@@ -30,6 +34,7 @@ public final class QrResource {
     Map<String, String> headers = new LinkedHashMap<>();
     headers.put("Content-Type", "application/json");
     headers.put("Accept", "*/*");
+    if (processing != null) headers.putAll(processing.headers());
     return http.requestBinary("POST", url, headers, body, Version.LIGHT_TIMEOUT_MS);
   }
 }

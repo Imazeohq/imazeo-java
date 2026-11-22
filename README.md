@@ -2,15 +2,15 @@
 
 Official **server-side** Java SDK for Imazeo.
 
-|                   |                                           |
-| ----------------- | ----------------------------------------- |
-| Maven coordinates | `com.imazeo:imazeo:1.0.0`                 |
-| SDK version       | `1.0.0`                                   |
-| Default API       | `v1`                                      |
-| Supported APIs    | `v1`                                      |
-| Runtime           | Java **17+** (`java.net.http.HttpClient`) |
+|                   |                                                                          |
+| ----------------- | ------------------------------------------------------------------------ |
+| Maven coordinates | `com.imazeo:imazeo:1.1.0`                                                |
+| SDK version       | `1.1.0`                                                                  |
+| Default API       | `v1`                                                                     |
+| Supported APIs    | `v1`                                                                     |
+| Runtime           | Java **17+** (`java.net.http.HttpClient`)                                |
 | Registry          | [Maven Central](https://central.sonatype.com/artifact/com.imazeo/imazeo) |
-| Source            | [GitHub](https://github.com/Imazeohq/imazeo-java) |
+| Source            | [GitHub](https://github.com/Imazeohq/imazeo-java)                        |
 
 > **Security:** Secret API keys (`X-API-Key`) are for trusted servers only.
 > Do **not** ship this client with a secret key in browsers or mobile apps.
@@ -25,14 +25,14 @@ Maven:
 <dependency>
   <groupId>com.imazeo</groupId>
   <artifactId>imazeo</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-implementation 'com.imazeo:imazeo:1.0.0'
+implementation 'com.imazeo:imazeo:1.1.0'
 ```
 
 Requires Java 17+. Create a project API key in the
@@ -80,14 +80,20 @@ Sends `X-API-Key` only. Never send `Authorization` together with an API key
 
 ## Resources
 
-| Resource            | Methods                                                                       |
-| ------------------- | ----------------------------------------------------------------------------- |
-| `client.context`    | `get()` → project/key environment                                             |
-| `client.images`     | `upload`, `list` (`page`/`limit`/`q`), `get`, `delete`, `download`            |
-| `client.transforms` | `create`, `list`, `get`, `download` (`ifNoneMatch` → `notModified`), `delete` |
-| `client.qr`         | `generate`                                                                    |
-| `client.barcodes`   | `generate`                                                                    |
-| `client.pdf`        | `info`, `render`, `merge`, `extract`                                          |
+| Resource              | Methods                                                                                               |
+| --------------------- | ----------------------------------------------------------------------------------------------------- |
+| `client.context`      | `get()` → project/key environment                                                                     |
+| `client.images`       | `upload`, `list` (`page`/`limit`/`q`), `get`, `delete`, `download`                                    |
+| `client.transforms`   | `create`, `list`, `get`, `download` (`ifNoneMatch` → `notModified`), `delete`                         |
+| `client.qr`           | `generate`                                                                                            |
+| `client.barcodes`     | `generate`                                                                                            |
+| `client.pdf`          | `info`, `render`, `merge`, `extract`                                                                  |
+| `client.credits`      | Quote processing credits for an operation and measurable units                                        |
+| `client.operations`   | Get status, look up by kind/key, and recover a temporary result                                       |
+| `client.conversions`  | DOCX, XLSX, PPTX and website jobs: capabilities, submit, list, lookup, get, cancel, download and save |
+| `client.dynamicCodes` | Capabilities, create, list, get, edit, scan analytics and CSV export                                  |
+| `client.artifacts`    | Save preview bytes, list, get, download and delete private artifacts                                  |
+| `client.outputs`      | List project outputs and retrieve counts by type                                                      |
 
 ### Upload + transform
 
@@ -145,12 +151,12 @@ try {
 | `appName`    | —                        | Appended to User-Agent                 |
 | `httpClient` | JDK client, no redirects | Tests / custom agents                  |
 
-User-Agent: `Imazeo-Java/1.0.0`.
+User-Agent: `Imazeo-Java/1.1.0`.
 
 ## API version vs package version
 
 - **API** path version: `v1` (configured via `apiVersion`)
-- **SDK** SemVer: `pom.xml` → `1.0.0`
+- **SDK** SemVer: `pom.xml` → `1.1.0`
 
 `Imazeo.apiCompatibility()` reports supported API versions.
 

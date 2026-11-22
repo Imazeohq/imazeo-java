@@ -4,6 +4,12 @@ import com.imazeo.http.Transport;
 import com.imazeo.resource.BarcodesResource;
 import com.imazeo.resource.ContextResource;
 import com.imazeo.resource.ImagesResource;
+import com.imazeo.resource.CreditsResource;
+import com.imazeo.resource.OperationsResource;
+import com.imazeo.resource.OutputsResource;
+import com.imazeo.resource.DynamicCodesResource;
+import com.imazeo.resource.ArtifactsResource;
+import com.imazeo.resource.ConversionsResource;
 import com.imazeo.resource.PdfResource;
 import com.imazeo.resource.QrResource;
 import com.imazeo.resource.TransformsResource;
@@ -26,6 +32,12 @@ public final class Imazeo {
   public final TransformsResource transforms;
   public final QrResource qr;
   public final BarcodesResource barcodes;
+  public final CreditsResource credits;
+  public final OperationsResource operations;
+  public final OutputsResource outputs;
+  public final DynamicCodesResource dynamicCodes;
+  public final ArtifactsResource artifacts;
+  public final ConversionsResource conversions;
   public final PdfResource pdf;
 
   public Imazeo(Options options) {
@@ -39,6 +51,12 @@ public final class Imazeo {
     this.transforms = new TransformsResource(http, this::resolveProjectId);
     this.qr = new QrResource(http, this::resolveProjectId);
     this.barcodes = new BarcodesResource(http, this::resolveProjectId);
+    this.credits = new CreditsResource(http, this::resolveProjectId);
+    this.operations = new OperationsResource(http, this::resolveProjectId);
+    this.outputs = new OutputsResource(http, this::resolveProjectId);
+    this.dynamicCodes = new DynamicCodesResource(http, this::resolveProjectId);
+    this.artifacts = new ArtifactsResource(http, this::resolveProjectId);
+    this.conversions = new ConversionsResource(http, this::resolveProjectId);
     this.pdf = new PdfResource(http, this::resolveProjectId);
   }
 
