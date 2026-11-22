@@ -4,8 +4,8 @@ Official **server-side** Java SDK for Imazeo.
 
 |                   |                                                                          |
 | ----------------- | ------------------------------------------------------------------------ |
-| Maven coordinates | `com.imazeo:imazeo:1.0.0`                                                |
-| SDK version       | `1.0.1`                                                                  |
+| Maven coordinates | `com.imazeo:imazeo:1.1.0`                                                |
+| SDK version       | `1.1.0`                                                                  |
 | Default API       | `v1`                                                                     |
 | Supported APIs    | `v1`                                                                     |
 | Runtime           | Java **17+** (`java.net.http.HttpClient`)                                |
@@ -25,14 +25,14 @@ Maven:
 <dependency>
   <groupId>com.imazeo</groupId>
   <artifactId>imazeo</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
 Gradle:
 
 ```groovy
-implementation 'com.imazeo:imazeo:1.0.0'
+implementation 'com.imazeo:imazeo:1.1.0'
 ```
 
 Requires Java 17+. Create a project API key in the
@@ -151,12 +151,12 @@ try {
 | `appName`    | —                        | Appended to User-Agent                 |
 | `httpClient` | JDK client, no redirects | Tests / custom agents                  |
 
-User-Agent: `Imazeo-Java/1.0.0`.
+User-Agent: `Imazeo-Java/1.1.0`.
 
 ## API version vs package version
 
 - **API** path version: `v1` (configured via `apiVersion`)
-- **SDK** SemVer: `pom.xml` → `1.0.0`
+- **SDK** SemVer: `pom.xml` → `1.1.0`
 
 `Imazeo.apiCompatibility()` reports supported API versions.
 
